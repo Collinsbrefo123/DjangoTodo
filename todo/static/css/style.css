@@ -1,0 +1,24 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+body{
+    background-color: #0f6674;
+    color: rgba(227, 214, 214, 0.89);
+}
+.listing{
+    color: blue;
+    width: 700px;
+    text-align: center;
+    list-style-type: none;
+}
+.formss{
+    text-align: center;
+    width: 500px;
+}
+.login{
+   margin-top: 100px;
+   margin-right: 300px;
+    margin-left: 300px;
+    padding-bottom: 50px;
+}

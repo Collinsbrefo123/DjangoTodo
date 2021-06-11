@@ -1,0 +1,53 @@
+{% extends 'todo/base.html' %}
+
+
+
+{% block title %} Current todo{% endblock %}
+
+
+{% block contents %}
+    <div>
+        <h1 class="text-uppercase text-center">current Todo list</h1>
+    </div>
+
+    <ul>
+        {% if not todos %}
+            <div class="pt-5">
+                <h4 class=" text-center">No current Todos. </h4>
+            </div>
+        {% else %}
+            {% for todo in todos %}
+                <div class="text-center">
+{#                    <li>#}
+{#                        <a href="{% url 'viewtodo' todo_pk=todo.id %}">#}
+{#                            {% if todo.important %}  <b> {% endif %}#}
+{#                            {{ todo.title }}#}
+{#                            {% if todo.important %}  </b> {% endif %}#}
+{#                            {% if todo.memo %}#}
+{#                                <p>{{ todo.memo|truncatechars:30 }}</p>#}
+{#                            {% endif %}#}
+{#                            <br>#}
+{#                        </a>#}
+{#                    </li>#}
+                    <ul class="list-group listing mx-auto">
+                        <a href="{% url 'viewtodo' todo_pk=todo.id %}">
+                               <li href="{% url 'viewtodo' todo_pk=todo.id %}">
+                            {% if todo.important %}  <li class="list-group-item list-group-item-danger"> {% else %} <li class="list-group-item text-muted "> {% endif %}
+                            {{ todo.title }}
+                                   {% if todo.important %}  </li> {% else %} </li>{% endif %}
+{#                            {% if todo.memo %}#}
+{#                                <p>{{ todo.memo|truncatechars:30 }}</p>#}
+{#                            {% endif %}#}
+                            <br>
+                        </a>
+
+                    </ul>
+                </div>
+
+            {% endfor %}
+        {% endif %}
+
+    </ul>
+
+
+{% endblock %}

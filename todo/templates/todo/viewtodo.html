@@ -1,0 +1,70 @@
+{% extends 'todo/base.html' %}
+
+
+
+{% block title %} Todo section {% endblock %}
+
+
+{% block contents %}
+    {% if error %}
+        <h3 class="alert alert-danger">{{ error }}</h3>
+    {% endif %}
+
+{#    <form method="POST">#}
+{#        {% csrf_token %}#}
+{#        {{ form.as_p }}#}
+{##}
+{#        <button class="btn btn-primary" type="submit">Update</button>#}
+{#    </form>#}
+{##}
+{#    <form class="pt-4" action="{% url 'completetodo' todo_pk=todos.id %}" method="POST">#}
+{#        {% csrf_token %}#}
+{##}
+{#        <button type="submit" class="btn btn-success">Completed</button>#}
+{#    </form>#}
+{##}
+{#    <form action="{% url 'deletetodo' todo_pk=todos.id %}" method="post">#}
+{#        {% csrf_token %}#}
+{#        <button type="submit" class="btn btn-danger">Delete</button>#}
+{#    </form>#}
+
+
+    <div class="text-center create login">
+        <h2 class="text-center">Update your Todo</h2>
+        <h4 class="alert-danger">{{ error }}</h4>
+
+        <div class="mx-auto container formss ">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input type="text" class="form-control" name="title" value="{{ todos.title }}" id="exampleInputEmail1"
+                           aria-describedby="emailHelp">
+                </div>
+                <div class="form-group">
+                    <textarea placeholder="Add your Memo" name="memo" class="form-control"
+                              id="exampleFormControlTextarea1" rows="3">{{ todos.memo }}</textarea>
+                </div>
+                <div class="form-group form-check">
+                    <input type="checkbox" name="important" class="form-check-input" {% if todos.important %}checked{% endif %} id="exampleCheck1">
+                    <label class="form-check-label" for="exampleCheck1" >Important</label>
+                </div>
+                <button type="submit" class="btn btn-outline-secondary">Update Todo</button>
+
+            </form>
+
+            {% if todos.datecompleted is None %}
+                    <form class="pt-1"  action="{% url 'completetodo' todo_pk=todos.id %}" method="POST">
+                        {% csrf_token %}
+
+                        <button type="submit" id="completed" class=" completed btn btn-outline-success">Completed</button>
+                    </form>
+            {% endif %}
+
+    <form class="pt-1" action="{% url 'deletetodo' todo_pk=todos.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit" id="delete" class="btn btn-outline-danger">Delete</button>
+    </form>
+        </div>
+    </div>
+
+{% endblock %}
