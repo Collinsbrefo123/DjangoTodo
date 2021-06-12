@@ -1,13 +1,13 @@
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
 from django.utils import timezone
+
 from .forms import TodoForm
 from .models import Todo
-from django.views.generic import CreateView
 
 
 def home(request):
@@ -20,7 +20,9 @@ def signupuser(request):
     else:
         if request.POST['password1'] == request.POST['password2']:
             try:
-                user = User.objects.create_user(username=request.POST['username'], password=request.POST['password1'])
+                user = User.objects.create_user(username=request.POST['username'],
+                                                first_name=request.POST['first_name'],
+                                                last_name=request.POST['last_name'],email=request.POST['email'], password=request.POST['password1'])
                 user.save()
                 login(request, user)
                 return redirect('currenttodos')
@@ -37,7 +39,7 @@ def loginuser(request):
     if request.method == 'GET':
         return render(request, 'todo/loginuser.html', {'form': AuthenticationForm})
     else:
-        field=['title', 'memo', 'important']
+        field = ['title', 'memo', 'important']
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
@@ -47,6 +49,7 @@ def loginuser(request):
         else:
             login(request, user)
             return redirect('currenttodos')
+
 
 @login_required
 def logoutuser(request):
@@ -75,6 +78,7 @@ def createtodo(request):
         # memo = request.POST['memo']
         # important = request.POST['important']
 
+
 @login_required
 def currenttodos(request):
     todos = Todo.objects.filter(user=request.user, datecompleted__isnull=True)
@@ -96,9 +100,11 @@ def viewtodo(request, todo_pk):
             form.save()
             return redirect('currenttodos')
         except ValueError:
-            return render(request, 'todo/viewtodo.html', {'todos': todo, 'form': form, 'error': 'Error in Input. Please Try again'})
+            return render(request, 'todo/viewtodo.html',
+                          {'todos': todo, 'form': form, 'error': 'Error in Input. Please Try again'})
 
-#to complete the todo
+
+# to complete the todo
 @login_required
 def completetodo(request, todo_pk):
     todo = get_object_or_404(Todo, pk=todo_pk, user=request.user)
@@ -106,6 +112,7 @@ def completetodo(request, todo_pk):
         todo.datecompleted = timezone.now()
         todo.save()
         return redirect('currenttodos')
+
 
 @login_required
 def deletetodo(request, todo_pk):
